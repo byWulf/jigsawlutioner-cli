@@ -1,0 +1,12 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+sets/*/piece*_*
+!sets/*/piece*_color.jpg
+sets/*/solution*.html
+sets/*/corner_points.json

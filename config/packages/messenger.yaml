@@ -1,0 +1,7 @@
+framework:
+    messenger:
+        transports:
+            analyze_pieces: 'doctrine://default?queue_name=analyze_pieces'
+
+        routing:
+            'App\Message\AnalyzePieceMessage': analyze_pieces
