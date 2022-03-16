@@ -1,4 +1,5 @@
-# jigsawlutioner.byWulf - CLI
+![jigsawlutioner.byWulf - CLI](doc/jigsawlutioner_cli_logo.png)
+
 ![License](https://img.shields.io/github/license/bywulf/jigsawlutioner-cli?style=flat-square&color=yellow)
 ![GitHub top language](https://img.shields.io/github/languages/top/bywulf/jigsawlutioner-cli?style=flat-square)
 
