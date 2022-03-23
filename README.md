@@ -76,3 +76,7 @@ It parses the border of a piece image and finds the four corners. Now you have f
 
 ## Solvable jigsaw puzzle manufacturers/forms
 Currently only standard rectangle puzzles are supported by the algorithm. Although it is design to be able to solve all kind of rectangle puzzles, only Ravensburger puzzles are currently solved correctly. This is because of the very good and individual forms each side gets by Ravensburger. Other manufacturers use too similar or even identical side forms and therefore this algorithm is not suitable for them.
+
+## Known problems
+### Segmentation fault
+Under Windows 10 it can happen that you see a "Segmentation fault" while solving a puzzle. This can be caused by the `xdebug` php extension. Disabling it in the `php.ini` solves the issue.
