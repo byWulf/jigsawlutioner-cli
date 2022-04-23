@@ -101,9 +101,6 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
-    "emcconville/point-reduction-algorithms": {
-        "version": "v1.2.0"
-    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.7"
     },
@@ -269,6 +266,9 @@
     },
     "symfony/polyfill-php81": {
         "version": "v1.25.0"
+    },
+    "symfony/process": {
+        "version": "v6.0.5"
     },
     "symfony/proxy-manager-bridge": {
         "version": "v6.0.6"

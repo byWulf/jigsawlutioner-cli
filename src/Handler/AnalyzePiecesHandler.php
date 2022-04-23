@@ -45,8 +45,7 @@ class AnalyzePiecesHandler implements MessageHandlerInterface
         try {
             $piece = $pieceAnalyzer->getPieceFromImage($analyzePieceMessage->pieceNumber, $image, new ByWulfBorderFinderContext(
                 threshold: $meta['threshold'],
-                transparentImage: $transparentImage,
-                smallTransparentImage: $resizedImage,
+                transparentImages: [$transparentImage, $resizedImage],
             ));
 
             // Found corners
