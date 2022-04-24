@@ -101,8 +101,11 @@ class SolvePuzzleCommand extends Command
         $this->groupsProgressBar->display();
         $this->biggestGroupProgressBar->display();
 
+        $output->writeln('Transforming to html solution...');
+
         $htmlFile = $this->setDirectory . $setName . '/solution.html';
         $this->solutionOutputter->outputAsHtml(
+            $setName,
             $solution,
             $htmlFile,
             $this->setDirectory . $setName . '/piece%s_transparent_small.png'

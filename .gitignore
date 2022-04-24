@@ -10,3 +10,10 @@ sets/*/piece*_*
 !sets/*/piece*_color.jpg
 sets/*/solution*.html
 sets/*/corner_points.json
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###

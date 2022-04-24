@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Solution of {{ setName }}</title>
+
+        {{ encore_entry_link_tags('solution')|replace({'"/': '"../../public/'})|raw }}
+        {{ encore_entry_script_tags('solution')|replace({'"/': '"../../public/'})|raw }}
+    </head>
+    <body>
+        <div class="container" data-controller="solution" data-solution-target="container">
+            <div class="row">
+                <div class="col">
+                    <h1>Solution of {{ setName }}</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label><input type="checkbox" data-solution-target="showNumbers" data-action="solution#toggleNumbers"> Show numbers</label>
+                    <label><input type="checkbox" data-solution-target="showProbabilities" data-action="solution#toggleNumbers"> Show probabilities</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {% for group in groups %}
+                        <div class="solution-container">
+                            <div class="solution" style="width: {{ group.width }}px; height: {{ group.height }}px;">
+                                {% for position in group.positions %}
+                                    <img class="piece" src="{{ position.image }}" style="
+                                        left: {{ position.left }}px;
+                                        top: {{ position.top }}px;
+                                        width: {{ position.piece.imageWidth }}px;
+                                        height: {{ position.piece.imageHeight }}px;
+                                        margin-left: {{ -position.piece.imageWidth / 2 }}px;
+                                        margin-top: {{ -position.piece.imageHeight / 2 }}px;
+                                        transform:
+                                        rotate({{ position.rotation }}deg)
+                                        translateX({{ position.piece.imageWidth / 2 - position.center.x }}px)
+                                        translateY({{ position.piece.imageHeight / 2 - position.center.y }}px);
+                                    ">
+
+                                    <div class="piece-overlay" style="
+                                        left: {{ position.left - position.placement.width / 2 }}px;
+                                        top: {{ position.top - position.placement.height / 2 }}px;
+                                        width: {{ position.placement.width }}px;
+                                        height: {{ position.placement.height }}px;
+                                    " data-x="{{ position.placement.x }}" data-y="{{ position.placement.y }}">
+
+                                        {% for i in 0..3 %}
+                                            {% set context = position.placement.context[i] %}
+                                            <div data-controller="side" data-side-target="side" data-action="click->side#openSide" data-piece-index="{{ position.piece.index }}" data-side-index="{{ (i + position.placement.topSideIndex) % 4 }}" data-context="{{ context|json_encode|escape }}" class="piece-overlay-side piece-overlay-{{ i }}">
+                                                {% if context.matchedProbabilityIndex is not null %}
+                                                    {% set probability = context.probabilities[(context.probabilities|keys)[context.matchedProbabilityIndex]] %}
+                                                    <span class="probability" style="text-shadow: {% for j in 0..10 %} 0 0 20px rgb({{ (1 - probability) * 255 }}, {{ probability * 255 }}, 0){{ loop.last ? '' : ', '}}{% endfor %}">{{ probability|round(2) }}</span>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                        <div class="number">{{ position.piece.index ~ '/' ~ position.placement.topSideIndex }}</div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-3" data-controller="stats" data-stats-target="stats" id="stats" style="display: none;">
+                    <h2>
+                        Infos zu <span data-stats-target="pieceIndex"></span>/<span data-stats-target="sideIndex"></span>
+                        <button class="close float-end" data-action="click->stats#hide">×</button>
+                    </h2>
+                    <table class="table table-bordered table-striped table-sm table-hover">
+                        <thead>
+                            <tr><th>Side</th><th>Probability</th></tr>
+                        </thead>
+                        <tbody data-stats-target="tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,91 @@
+.solution-container {
+    background-color: #cde;
+    box-shadow: 0 0 100px #cde, 0 0 100px #cde, 0 0 100px #cde;
+    margin: 100px;
+    float: left;
+    zoom: 0.1;
+}
+
+.solution {
+    position: relative;
+}
+
+.solution .piece {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.solution .piece-overlay {
+    position: absolute;
+    z-index: 5;
+}
+.solution .piece-overlay:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.solution .piece-overlay-0 {
+    position: absolute;
+    width: 80%;
+    height: 30%;
+    left: 10%;
+    top: 0;
+}
+.solution .piece-overlay-1 {
+    position: absolute;
+    width: 30%;
+    height: 80%;
+    left: 0;
+    top: 10%;
+    line-height: 250px;
+}
+.solution .piece-overlay-2 {
+    position: absolute;
+    width: 80%;
+    height: 30%;
+    left: 10%;
+    bottom: 0;
+}
+.solution .piece-overlay-3 {
+    position: absolute;
+    width: 30%;
+    height: 80%;
+    right: 0;
+    top: 10%;
+    line-height: 250px;
+}
+.solution .piece-overlay-side {
+    font-weight: bold;
+    font-size: 50px;
+    text-align: center;
+}
+.solution .piece-overlay-side .probability {
+    display: none;
+}
+.container.show-probabilities .solution .piece-overlay-side .probability {
+    display: block;
+}
+.solution .piece-overlay-side:hover {
+    background-color: rgba(255, 200, 150, 0.3);
+}
+.solution .piece-overlay-side.selected {
+    background-color: rgba(255, 61, 0, 0.42);
+}
+
+.solution .piece-overlay .number {
+    position: absolute;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+    color: #000;
+    text-shadow: 0 0 10px white, 0 0 10px white, 0 0 10px white, 0 0 10px white, 0 0 10px white, 0 0 20px white, 0 0 20px white, 0 0 20px white;
+    font-size: 100px;
+    text-align: center;
+    line-height: 300px;
+    transform: rotate(-45deg);
+    pointer-events: none;
+
+    display: none;
+}
+.container.show-numbers .solution .piece-overlay .number {
+    display: block;
+}
