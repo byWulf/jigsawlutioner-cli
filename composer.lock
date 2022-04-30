@@ -557,16 +557,16 @@
         },
         {
             "name": "bywulf/jigsawlutioner",
-            "version": "2.0.1",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/byWulf/jigsawlutioner.git",
-                "reference": "272508254da2d7f18fdccc77e631a95f4e8693a7"
+                "reference": "10ed89eff8d93ef1d6da52a12486eef3aa030f8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/byWulf/jigsawlutioner/zipball/272508254da2d7f18fdccc77e631a95f4e8693a7",
-                "reference": "272508254da2d7f18fdccc77e631a95f4e8693a7",
+                "url": "https://api.github.com/repos/byWulf/jigsawlutioner/zipball/10ed89eff8d93ef1d6da52a12486eef3aa030f8f",
+                "reference": "10ed89eff8d93ef1d6da52a12486eef3aa030f8f",
                 "shasum": ""
             },
             "require": {
@@ -604,9 +604,9 @@
             "description": "Jigsaw puzzle solving algorithm",
             "support": {
                 "issues": "https://github.com/byWulf/jigsawlutioner/issues",
-                "source": "https://github.com/byWulf/jigsawlutioner/tree/2.0.1"
+                "source": "https://github.com/byWulf/jigsawlutioner/tree/2.1.0"
             },
-            "time": "2022-04-24T18:13:05+00:00"
+            "time": "2022-04-30T08:14:55+00:00"
         },
         {
             "name": "doctrine/annotations",
