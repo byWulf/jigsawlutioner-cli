@@ -60,6 +60,8 @@ class SolutionOutputter
                 );
                 $positionedGroup->addPosition($position);
             }
+
+            $groups[] = $positionedGroup;
         }
 
         $this->filesystem->dumpFile($placementHtmlPath, $this->twig->render('solution.html.twig', [
