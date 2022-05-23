@@ -104,6 +104,10 @@ class PieceLoader
 
             $numbers = [];
             for ($i = $meta['min']; $i <= $meta['max']; ++$i) {
+                if (isset($meta['exclude']) && is_array($meta['exclude']) && in_array($i, $meta['exclude'], true)) {
+                    continue;
+                }
+
                 $numbers[] = $i;
             }
         }
