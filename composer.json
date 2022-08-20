@@ -24,7 +24,7 @@
         "php": ">= 8.1.0",
         "ext-gd": "*",
         "amphp/parallel": "^1.4",
-        "bywulf/jigsawlutioner": "^2.0",
+        "bywulf/jigsawlutioner": "dev-feature/parallel as 2.0",
         "symfony/console": "6.1.*",
         "symfony/dotenv": "6.1.*",
         "symfony/flex": "^2.1",

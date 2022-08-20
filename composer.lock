@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1317ff113a5920a4b319287c186fbf3e",
+    "content-hash": "26cd6060dd5fd8d40f7e4d57a1ce0023",
     "packages": [
         {
             "name": "amphp/amp",
@@ -557,21 +557,22 @@
         },
         {
             "name": "bywulf/jigsawlutioner",
-            "version": "2.2.0",
+            "version": "dev-feature/parallel",
             "source": {
                 "type": "git",
                 "url": "https://github.com/byWulf/jigsawlutioner.git",
-                "reference": "9faa51c85750c2c5aeff3af9d93ca65528a4926e"
+                "reference": "a7cf75ea18076d54777318ae36fbe56b8faed3d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/byWulf/jigsawlutioner/zipball/9faa51c85750c2c5aeff3af9d93ca65528a4926e",
-                "reference": "9faa51c85750c2c5aeff3af9d93ca65528a4926e",
+                "url": "https://api.github.com/repos/byWulf/jigsawlutioner/zipball/a7cf75ea18076d54777318ae36fbe56b8faed3d3",
+                "reference": "a7cf75ea18076d54777318ae36fbe56b8faed3d3",
                 "shasum": ""
             },
             "require": {
+                "amphp/parallel": "^1.4",
                 "ext-gd": "*",
-                "php": "^8.0",
+                "php": "^8.1",
                 "psr/log": "^1 || ^2 || ^3",
                 "rubix/ml": "^1.3.2",
                 "symfony/validator": "^6.0"
@@ -604,9 +605,9 @@
             "description": "Jigsaw puzzle solving algorithm",
             "support": {
                 "issues": "https://github.com/byWulf/jigsawlutioner/issues",
-                "source": "https://github.com/byWulf/jigsawlutioner/tree/2.2.0"
+                "source": "https://github.com/byWulf/jigsawlutioner/tree/feature/parallel"
             },
-            "time": "2022-06-03T11:53:33+00:00"
+            "time": "2022-08-20T20:31:38+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4553,9 +4554,18 @@
             "time": "2022-02-25T11:15:52+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "bywulf/jigsawlutioner",
+            "version": "dev-feature/parallel",
+            "alias": "2.0",
+            "alias_normalized": "2.0.0.0"
+        }
+    ],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "bywulf/jigsawlutioner": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
