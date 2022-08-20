@@ -13,6 +13,7 @@ use Bywulf\Jigsawlutioner\Exception\PuzzleSolverException;
 use Bywulf\Jigsawlutioner\Service\MatchingMapGenerator;
 use Bywulf\Jigsawlutioner\Service\PuzzleSolver\ByWulfSolver;
 use Bywulf\Jigsawlutioner\Service\SideMatcher\WeightedMatcher;
+use DateTime;
 use InvalidArgumentException;
 use JsonException;
 use Symfony\Component\Cache\CacheItem;
@@ -32,6 +33,8 @@ use Symfony\Contracts\Cache\CacheInterface;
 class SolvePuzzleCommand extends Command
 {
     private string $currentMessage = '';
+
+    private ?DateTime $currentStartDate = null;
 
     private string $messages = '';
 
@@ -146,12 +149,13 @@ class SolvePuzzleCommand extends Command
             return;
         }
 
-        if ($this->currentMessage !== '') {
-            $this->messages .= PHP_EOL . '<fg=#00ff00>✔ ' . $this->currentMessage . ($groups !== null && $biggestGroup !== null ? ' (' . $groups . ' // ' . $biggestGroup . ')' : '') . '</>';
+        if ($this->currentMessage !== '' && $this->currentStartDate !== null) {
+            $this->messages .= PHP_EOL . $this->currentStartDate->format('H:i:s') . '-' . (new DateTime())->format('H:i:s') . ' <fg=#00ff00>✔ ' . $this->currentMessage . ($groups !== null && $biggestGroup !== null ? ' (' . $groups . ' // ' . $biggestGroup . ')' : '') . '</>';
         }
         $this->currentMessage = $message;
+        $this->currentStartDate = new DateTime();
 
-        $this->messageSection->overwrite($this->messages . ($message !== '' ? PHP_EOL . '<fg=#ff8800>⌛ ' . $message . '</>' : ''));
+        $this->messageSection->overwrite($this->messages . ($message !== '' ? PHP_EOL . $this->currentStartDate->format('H:i:s') . '-         <fg=#ff8800>⌛ ' . $message . '</>' : ''));
     }
 
     private function initializeProgressBars(OutputInterface $output, int $piecesCount): void
