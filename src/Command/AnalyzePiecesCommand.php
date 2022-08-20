@@ -2,13 +2,10 @@
 
 namespace App\Command;
 
-use App\Message\AnalyzePieceMessage;
+use Amp\Parallel\Worker\DefaultPool;
 use App\Service\PieceLoader;
-use Doctrine\DBAL\Exception as DbalException;
+use App\Task\AnalyzePieceTask;
 use JsonException;
-use App\Repository\MessengerRepository;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Exchange\AMQPExchangeType;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -16,16 +13,16 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Process\Process;
+use function Amp\call;
+use function Amp\Promise\all;
+use function Amp\Promise\wait;
 
-#[AsCommand(name: 'app:pieces:analyze')]
+#[AsCommand(name: 'app:pieces:parallel-analyze')]
 class AnalyzePiecesCommand extends Command
 {
     public function __construct(
         private readonly PieceLoader $pieceLoader,
-        private readonly MessageBusInterface $messageBus,
-        private readonly MessengerRepository $messengerRepository
+        private readonly string      $setDirectory,
     ) {
         parent::__construct();
     }
@@ -38,7 +35,6 @@ class AnalyzePiecesCommand extends Command
 
     /**
      * @throws JsonException
-     * @throws DbalException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -52,36 +48,31 @@ class AnalyzePiecesCommand extends Command
         }
         $pieceCount = count($numbers);
 
-        $this->messengerRepository->clearQueue('analyze_pieces');
-        foreach ($numbers as $pieceNumber) {
-            $this->messageBus->dispatch(new AnalyzePieceMessage($setName, (int) $pieceNumber));
-        }
+        $pool = new DefaultPool();
 
-        // Start up to 10 consumers
-        /** @var Process[] $processes */
-        $processes = [];
-        for ($i = 1; $i <= min(10, $pieceCount); $i++) {
-            $process = new Process([ PHP_BINARY, __DIR__ . '/../../bin/console', 'messenger:consume', 'analyze_pieces']);
-            $process->start();
-            $processes[] = $process;
-        }
+        $coroutines = [];
+        $setDirectory = $this->setDirectory;
 
+        $processedPieces = 0;
         $progress = new ProgressBar($output);
         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
         $progress->start($pieceCount);
-        do {
-            $messageCount = $this->messengerRepository->getQueuedMessagesCount('analyze_pieces');
-            $progress->setProgress($pieceCount - $messageCount);
 
-            usleep(100000);
-        } while ($messageCount > 0);
+        foreach ($numbers as $pieceNumber) {
+            $coroutines[] = call(function() use ($pool, $setName, $pieceNumber, $setDirectory, &$processedPieces, $progress) {
+                yield $pool->enqueue(new AnalyzePieceTask($setName, (int) $pieceNumber, $setDirectory));
+
+                $processedPieces++;
+                $progress->setProgress($processedPieces);
+            });
+        }
+
+        wait(all($coroutines));
+
 
         $progress->finish();
-        $output->writeln('');
 
-        foreach ($processes as $process) {
-            $process->stop();
-        }
+        $output->writeln('');
 
         $io->success('Finished.');
 
