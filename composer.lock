@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "26cd6060dd5fd8d40f7e4d57a1ce0023",
+    "content-hash": "38df5ec8f61249ed706a64ff52beb7fd",
     "packages": [
         {
             "name": "amphp/amp",
@@ -557,16 +557,16 @@
         },
         {
             "name": "bywulf/jigsawlutioner",
-            "version": "dev-feature/parallel",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/byWulf/jigsawlutioner.git",
-                "reference": "a7cf75ea18076d54777318ae36fbe56b8faed3d3"
+                "reference": "f641f019d39d8de81a3a4964b280c425e6a39232"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/byWulf/jigsawlutioner/zipball/a7cf75ea18076d54777318ae36fbe56b8faed3d3",
-                "reference": "a7cf75ea18076d54777318ae36fbe56b8faed3d3",
+                "url": "https://api.github.com/repos/byWulf/jigsawlutioner/zipball/f641f019d39d8de81a3a4964b280c425e6a39232",
+                "reference": "f641f019d39d8de81a3a4964b280c425e6a39232",
                 "shasum": ""
             },
             "require": {
@@ -605,9 +605,9 @@
             "description": "Jigsaw puzzle solving algorithm",
             "support": {
                 "issues": "https://github.com/byWulf/jigsawlutioner/issues",
-                "source": "https://github.com/byWulf/jigsawlutioner/tree/feature/parallel"
+                "source": "https://github.com/byWulf/jigsawlutioner/tree/2.3.0"
             },
-            "time": "2022-08-20T20:31:38+00:00"
+            "time": "2022-08-20T22:28:30+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4554,18 +4554,9 @@
             "time": "2022-02-25T11:15:52+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "bywulf/jigsawlutioner",
-            "version": "dev-feature/parallel",
-            "alias": "2.0",
-            "alias_normalized": "2.0.0.0"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "bywulf/jigsawlutioner": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
