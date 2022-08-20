@@ -17,7 +17,7 @@ use function Amp\call;
 use function Amp\Promise\all;
 use function Amp\Promise\wait;
 
-#[AsCommand(name: 'app:pieces:parallel-analyze')]
+#[AsCommand(name: 'app:pieces:analyze')]
 class AnalyzePiecesCommand extends Command
 {
     public function __construct(
