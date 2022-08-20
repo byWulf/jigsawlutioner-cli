@@ -23,23 +23,17 @@
     "require": {
         "php": ">= 8.1.0",
         "ext-gd": "*",
-        "bywulf/jigsawlutioner": "^2.0",
-        "doctrine/doctrine-bundle": "^2.5",
-        "doctrine/doctrine-migrations-bundle": "^3.2",
-        "doctrine/orm": "^2.11",
-        "symfony/console": "^6.0",
-        "symfony/doctrine-messenger": "6.0.*",
-        "symfony/dotenv": "6.0.*",
+        "amphp/parallel": "^1.4",
+        "bywulf/jigsawlutioner": "^2.3",
+        "symfony/console": "6.1.*",
+        "symfony/dotenv": "6.1.*",
         "symfony/flex": "^2.1",
-        "symfony/framework-bundle": "6.0.*",
-        "symfony/messenger": "6.0.*",
+        "symfony/framework-bundle": "6.1.*",
         "symfony/monolog-bundle": "^3.0",
-        "symfony/process": "6.0.*",
-        "symfony/proxy-manager-bridge": "6.0.*",
-        "symfony/runtime": "^6.0",
-        "symfony/twig-bundle": "6.0.*",
+        "symfony/runtime": "6.1.*",
+        "symfony/twig-bundle": "6.1.*",
         "symfony/webpack-encore-bundle": "^1.14",
-        "symfony/yaml": "^6.0",
+        "symfony/yaml": "6.1.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
     },
@@ -73,8 +67,8 @@
         ]
     },
     "require-dev": {
-        "symfony/debug-bundle": "^6.0",
-        "symfony/stopwatch": "^6.0"
+        "symfony/debug-bundle": "6.1.*",
+        "symfony/stopwatch": "6.1.*"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -82,7 +76,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.0.*"
+            "require": "6.1.*"
         }
     }
 }

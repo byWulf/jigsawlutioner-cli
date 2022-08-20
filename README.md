@@ -15,6 +15,13 @@ Jigsawlutioner is an algorithm designed to solve a jigsaw puzzle based on images
 * [bywulf/jigsawlutioner](https://github.com/byWulf/jigsawlutioner) - the algorithm itself
 * [byWulf/jigsawlutioner-machine](https://github.com/byWulf/jigsawlutioner-machine) - lego machine scanning and solving the puzzle by its own automatically
 
+## Install
+```shell
+composer install
+npm install
+npm run dev
+```
+
 ## Example
 If you just want to test it out, you can use one of the sets included in this repository. See in the `sets/` folder which sets are currently existing. I recommend the `test_ordered` set.
 

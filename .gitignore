@@ -9,6 +9,7 @@
 sets/*/piece*_*
 !sets/*/piece*_color.jpg
 sets/*/solution*.html
+sets/*/solution*.ser
 sets/*/corner_points.json
 
 ###> symfony/webpack-encore-bundle ###

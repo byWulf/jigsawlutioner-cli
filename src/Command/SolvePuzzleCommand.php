@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Service\PieceLoader;
 use App\Service\SolutionOutputter;
+use Bywulf\Jigsawlutioner\Dto\Context\SolutionReport;
 use Bywulf\Jigsawlutioner\Dto\Piece;
+use Bywulf\Jigsawlutioner\Dto\ReducedPiece;
 use Bywulf\Jigsawlutioner\Exception\PuzzleSolverException;
 use Bywulf\Jigsawlutioner\Service\MatchingMapGenerator;
 use Bywulf\Jigsawlutioner\Service\PuzzleSolver\ByWulfSolver;
 use Bywulf\Jigsawlutioner\Service\SideMatcher\WeightedMatcher;
-use App\Service\PieceLoader;
+use DateTime;
 use InvalidArgumentException;
 use JsonException;
+use Symfony\Component\Cache\CacheItem;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -22,12 +26,15 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\ConsoleSectionOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Cache\CacheInterface;
 
 #[AsCommand(name: 'app:puzzle:solve')]
 class SolvePuzzleCommand extends Command
 {
     private string $currentMessage = '';
+
+    private ?DateTime $currentStartDate = null;
 
     private string $messages = '';
 
@@ -45,7 +52,8 @@ class SolvePuzzleCommand extends Command
         private readonly PieceLoader $pieceLoader,
         private readonly string $setDirectory,
         private readonly CacheInterface $cache,
-        private readonly SolutionOutputter $solutionOutputter
+        private readonly SolutionOutputter $solutionOutputter,
+        private readonly Filesystem $filesystem,
     )
     {
         parent::__construct();
@@ -53,7 +61,7 @@ class SolvePuzzleCommand extends Command
         $this->matchingMapGenerator = new MatchingMapGenerator(new WeightedMatcher());
         $this->solver = new ByWulfSolver();
         $this->solver->setStepProgressionCallback(function (string $message, int $groups, int $biggestGroup): void {
-            $this->addMessage($message);
+            $this->addMessage($message, $groups, $biggestGroup);
             $this->groupsProgressBar->setProgress($groups);
             $this->biggestGroupProgressBar->setProgress($biggestGroup);
         });
@@ -64,6 +72,7 @@ class SolvePuzzleCommand extends Command
         $this->addArgument('set', InputArgument::REQUIRED, 'Name of set folder');
         $this->addOption('force', 'f', InputOption::VALUE_NONE, 'Force rebuilding the matchingMap and not loading it from cache.');
         $this->addArgument('pieces', InputArgument::OPTIONAL, 'Comma separated list of piece ids that should be processed from the given set.');
+        $this->addOption('use-report', 'r', InputOption::VALUE_OPTIONAL, 'Specify the number of the solution report if you want to continue from this solution');
     }
 
     /**
@@ -80,6 +89,13 @@ class SolvePuzzleCommand extends Command
         $setName = $input->getArgument('set');
         $pieces = $this->getPieces($setName, $input);
 
+        $this->solver->setReportSolutionCallback(function(SolutionReport $report) use ($setName): void {
+            $this->filesystem->dumpFile(
+                $this->setDirectory . $setName . '/solution_report' . $report->getSolutionStep() . '.ser',
+                serialize($report),
+            );
+        });
+
         $this->messageSection = $output->section();
         $this->initializeProgressBars($output, count($pieces));
 
@@ -87,14 +103,25 @@ class SolvePuzzleCommand extends Command
         if ($input->getOption('force')) {
             $this->cache->delete($cachingKey);
         }
-        $matchingMap = $this->cache->get($cachingKey, function() use ($pieces) {
+
+        $matchingMap = $this->cache->get($cachingKey, function(CacheItem $item) use ($pieces) {
+            $item->expiresAfter(86400);
+
             $this->addMessage('Creating matching map...');
             return $this->matchingMapGenerator->getMatchingMap($pieces);
         });
 
+        /** @var string|null $solutionReportId */
+        $solutionReportId = $input->getOption('use-report');
+        if ($solutionReportId !== null) {
+            /** @var SolutionReport $solutionReport */
+            $solutionReport = unserialize(file_get_contents($this->setDirectory . $setName . '/solution_report' . $solutionReportId . '.ser'));
+            $this->solver->setSolutionReport($solutionReport);
+        }
+
         $solution = $this->solver->findSolution(
-            $pieces,
-            $matchingMap
+            array_map(fn (Piece $piece): ReducedPiece => ReducedPiece::fromPiece($piece), $pieces),
+            $matchingMap,
         );
 
         $this->addMessage('');
@@ -116,18 +143,19 @@ class SolvePuzzleCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function addMessage(string $message): void
+    private function addMessage(string $message, ?int $groups = null, ?int $biggestGroup = null): void
     {
         if ($this->currentMessage === $message) {
             return;
         }
 
-        if ($this->currentMessage !== '') {
-            $this->messages .= PHP_EOL . '<fg=#00ff00>✔ ' . $this->currentMessage . '</>';
+        if ($this->currentMessage !== '' && $this->currentStartDate !== null) {
+            $this->messages .= PHP_EOL . $this->currentStartDate->format('H:i:s') . '-' . (new DateTime())->format('H:i:s') . ' <fg=#00ff00>✔ ' . $this->currentMessage . ($groups !== null && $biggestGroup !== null ? ' (' . $groups . ' // ' . $biggestGroup . ')' : '') . '</>';
         }
         $this->currentMessage = $message;
+        $this->currentStartDate = new DateTime();
 
-        $this->messageSection->overwrite($this->messages . ($message !== '' ? PHP_EOL . '<fg=#ff8800>⌛ ' . $message . '</>' : ''));
+        $this->messageSection->overwrite($this->messages . ($message !== '' ? PHP_EOL . $this->currentStartDate->format('H:i:s') . '-         <fg=#ff8800>⌛ ' . $message . '</>' : ''));
     }
 
     private function initializeProgressBars(OutputInterface $output, int $piecesCount): void
