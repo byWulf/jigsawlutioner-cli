@@ -128,6 +128,11 @@ class SolvePuzzleCommand extends Command
         $this->groupsProgressBar->display();
         $this->biggestGroupProgressBar->display();
 
+        $output->writeln('Transforming to json solution...');
+
+        $jsonFile = $this->setDirectory . $setName . '/solution.json';
+        $this->solutionOutputter->outputAsJson($solution, $jsonFile);
+
         $output->writeln('Transforming to html solution...');
 
         $htmlFile = $this->setDirectory . $setName . '/solution.html';
@@ -138,7 +143,7 @@ class SolvePuzzleCommand extends Command
             $this->setDirectory . $setName . '/piece%s_transparent_small.png'
         );
 
-        $output->writeln('Solution can be viewed at <href=file://' . $htmlFile . '>' . $setName . '/solution.html</>');
+        $output->writeln('Solution dumped to ' . $jsonFile . '. It can be viewed visually at <href=file://' . $htmlFile . '>' . $setName . '/solution.html</>');
 
         return Command::SUCCESS;
     }

@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Dto\Position;
 use App\Dto\PositionedGroup;
 use Bywulf\Jigsawlutioner\Dto\Group;
+use Bywulf\Jigsawlutioner\Dto\Placement;
 use Bywulf\Jigsawlutioner\Dto\Solution;
 use Bywulf\Jigsawlutioner\Service\PointService;
 use Symfony\Component\Filesystem\Filesystem;
@@ -21,6 +22,24 @@ class SolutionOutputter
         private readonly PointService $pointService,
     ) {
 
+    }
+
+    public function outputAsJson(Solution $solution, string $placementJsonPath): void
+    {
+        $data = array_map(
+            fn (Group $group): array => array_map(
+                fn (Placement $placement): array => [
+                    'pieceIndex' => $placement->getPiece()->getIndex(),
+                    'x' => $placement->getX(),
+                    'y' => $placement->getY(),
+                    'topSideIndex' => $placement->getTopSideIndex(),
+                ],
+                $group->getPlacements()
+            ),
+            $solution->getGroups(),
+        );
+
+        $this->filesystem->dumpFile($placementJsonPath, json_encode($data));
     }
 
     public function outputAsHtml(string $setName, Solution $solution, string $placementHtmlPath, string $transparentImagePathPattern): void
