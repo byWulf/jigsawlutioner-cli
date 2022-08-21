@@ -557,16 +557,16 @@
         },
         {
             "name": "bywulf/jigsawlutioner",
-            "version": "2.3.0",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/byWulf/jigsawlutioner.git",
-                "reference": "f641f019d39d8de81a3a4964b280c425e6a39232"
+                "reference": "527ed385bbfcd065c65893ad1922e67cf608cecd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/byWulf/jigsawlutioner/zipball/f641f019d39d8de81a3a4964b280c425e6a39232",
-                "reference": "f641f019d39d8de81a3a4964b280c425e6a39232",
+                "url": "https://api.github.com/repos/byWulf/jigsawlutioner/zipball/527ed385bbfcd065c65893ad1922e67cf608cecd",
+                "reference": "527ed385bbfcd065c65893ad1922e67cf608cecd",
                 "shasum": ""
             },
             "require": {
@@ -605,9 +605,9 @@
             "description": "Jigsaw puzzle solving algorithm",
             "support": {
                 "issues": "https://github.com/byWulf/jigsawlutioner/issues",
-                "source": "https://github.com/byWulf/jigsawlutioner/tree/2.3.0"
+                "source": "https://github.com/byWulf/jigsawlutioner/tree/2.3.2"
             },
-            "time": "2022-08-20T22:28:30+00:00"
+            "time": "2022-08-21T09:11:53+00:00"
         },
         {
             "name": "monolog/monolog",
